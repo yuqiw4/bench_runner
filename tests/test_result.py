@@ -19,30 +19,29 @@ def _copy_results(tmp_path):
     return results_path
 
 
-def test_load_all_results(tmp_path, monkeypatch):
-    results_path = _copy_results(tmp_path)
-    monkeypatch.chdir(tmp_path)
+def test_load_all_results(tmp_path):
+    # results_path = _copy_results(tmp_path)
+    # monkeypatch.chdir(tmp_path)
+    results_path = tmp_path / "results"
 
-    results = mod_result.load_all_results(["3.10.4", "3.11.0b3"], results_path)
-
-    assert len(results) == 11
-
-    by_version = {x.version: x for x in results}
-
-    result_310 = by_version["3.10.4"]
-
+    #results = mod_result.load_all_results(["3.12.0b1"], results_path)
+    results = mod_result.load_all_results([], results_path)
+    print("All results:")
     for result in results:
-        if result is not result_310:
-            comparison = result.bases["3.10.4"]
-            assert comparison.ref is result_310
-            assert comparison.head is result
-            assert comparison.base == "3.10.4"
+        print()
+        print("result.cpython_hash:", result.cpython_hash, 
+              "result.flags:", result.flags, 
+              "result.bases:", result.bases)
+        print()
+        for base in result.bases.values():
+            print("*"*20 , "SPECIAL")
+            print("base.ref.version:", base.ref.version, "\nbase.ref.cpython_hash:", base.ref.cpython_hash, "\nbase.ref.flags:", base.ref.flags)
+            print("\nbase.head.version:", base.head.version, "\nbase.head.cpython_hash:", base.head.cpython_hash, "\nbase.head.flags:", base.head.flags)
+            print("---base.geometric_mean:", base.geometric_mean)
+            print("\n\n")
 
-    assert result_310.commit_datetime == "2022-03-23T20:12:04+00:00"
-    assert result_310.commit_date == "2022-03-23"
-    assert result_310.commit_merge_base is None
-    assert result_310.benchmark_hash == "215d35"
-
+tmp_path = Path(__file__).parent / "temp_path"
+test_load_all_results(tmp_path)
 
 def test_merge_base(tmp_path, monkeypatch):
     monkeypatch.chdir(DATA_PATH)

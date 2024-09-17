@@ -779,6 +779,17 @@ def match_to_bases(
                 ),
             )
 
+            found_base = find_match(
+                result,
+                candidates,
+                "base_diff_flags",
+                lambda ref: (
+                    _merge_base.startswith(ref.cpython_hash)
+                    and ref.flags != result.flags
+                    and ref.flags == []
+                ),
+            )
+
         if not found_base and result.fork == "python" and result.flags != []:
             # Compare builds with flags with builds with no flags
             find_match(

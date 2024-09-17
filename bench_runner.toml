@@ -1,5 +1,5 @@
 [bases]
-versions = ["3.10.4", "3.12.0", "3.13.0b2"]
+versions = ["3.11.0", "3.12.0"]
 
 [[runners]]
 [runners.linux]

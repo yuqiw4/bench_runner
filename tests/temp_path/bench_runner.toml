@@ -1,5 +1,6 @@
 [bases]
-versions = ["3.10.4", "3.12.0", "3.13.0b2"]
+# List the base versions you want to compare every benchmark run to
+versions = ["3.12.0b1"]
 
 [[runners]]
 [runners.linux]
@@ -8,7 +9,7 @@ arch = "x86_64"
 hostname = "pyperf"
 
 [plot]
-bases = ["3.10.4", "3.12.0", "3.13.0b2", "3.13.0b2"]
+bases = ["3.12.0b1"]
 versions = [[3, 11], [3, 13], [3, 14], [3, 14]]
 runners = [
     "linux",
